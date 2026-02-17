@@ -1,4 +1,7 @@
 from django.db import models
+from decimal import Decimal
+from django.db.models.functions import Coalesce
+from django.db.models import Sum
 
 # Create your models here.
 class Cause(models.Model):
@@ -28,7 +31,9 @@ class Cause(models.Model):
     
     @property
     def amount_raised(self): 
-        """
-        Calculated dynamically from successful donations.
-        """
-        return 0
+        from donations.models import Donation
+        total = Donation.objects.filter(
+            cause=self,
+            status="SUCCESS"
+        ).aggregate(total=Coalesce(Sum("amount"), Decimal("0.00")))["total"]
+        return total
