@@ -2,9 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 # Create your models here.
-class User(AbstractUser):
-    full_name = models.CharField(max_length=255)
-    
+class User(AbstractUser):    
     ROLE_CHOICES = (
         ('DONOR', 'Donor'),
         ('ORGANIZATION', 'Organization'),
@@ -17,3 +15,7 @@ class User(AbstractUser):
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}".strip()
