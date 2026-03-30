@@ -13,10 +13,18 @@ class OrganizationSerializer(serializers.ModelSerializer):
             "name",
             "description",
             "registration_number",
+            "kra_pin",
+            "tcc_number",
+            "tcc_document",
             "verification_status",
+            "payout_method",
+            "payout_bank_name",
+            "payout_shortcode",
+            "payout_account_number",
             "verified_at",
             "contact_email",
             "contact_phone",
+            "physical_address",
             "created_at",
             "updated_at"
         ]

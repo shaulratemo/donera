@@ -4,5 +4,5 @@ from .views import PublishedReportListView, ReportCreateView, OrganizationReport
 urlpatterns = [
     path("feed/", PublishedReportListView.as_view(), name="report-feed"),
     path("create/", ReportCreateView.as_view(), name="report-create"),
-    path("<int:pk", OrganizationReportDetailView.as_view(), name="report-manage"),
+    path("<int:pk>/", OrganizationReportDetailView.as_view(), name="report-manage"),
 ]
