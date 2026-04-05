@@ -8,6 +8,8 @@ class ReportSerializer(serializers.ModelSerializer):
             "id",
             "cause",
             "created_by",
+            "funds_utilized",
+            "expense_category",
             "content",
             "summary",
             "evidence",

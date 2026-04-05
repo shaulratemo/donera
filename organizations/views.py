@@ -1,14 +1,15 @@
 from rest_framework import generics, status
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Organization
 from .serializers import OrganizationSerializer
+from users.permissions import IsOrganizationAdmin
 
 # Registration View
 class OrganizationCreateView(generics.CreateAPIView):
     serializer_class = OrganizationSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOrganizationAdmin]
     
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -16,7 +17,7 @@ class OrganizationCreateView(generics.CreateAPIView):
 # Owner's Dashboard View
 class MyOrganizationView(generics.RetrieveUpdateAPIView):
     serializer_class = OrganizationSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOrganizationAdmin]
     
     def get_object(self):
         try:

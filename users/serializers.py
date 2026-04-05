@@ -41,11 +41,15 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             "role",
             "phone_number"
         ]
+        read_only_fields = ["role"]
     
     # Intercepting the saving process to hash the password
     def create(self, validated_data):
         # Extract the password from the validated data
         password = validated_data.pop('password')
+        # Never trust role from public registration payloads.
+        validated_data.pop('role', None)
+        validated_data['role'] = 'DONOR'
         
         user = User(**validated_data)
         # Hashing the password and attaching it to the user

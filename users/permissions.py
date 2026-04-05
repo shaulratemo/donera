@@ -11,6 +11,11 @@ class IsOrganization(BasePermission):
         return bool(request.user and request.user.is_authenticated and request.user.role == "ORGANIZATION")
 
 
+class IsOrganizationAdmin(BasePermission):
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_authenticated and request.user.role == "ORGANIZATION")
+
+
 class IsDonor(BasePermission):
     def has_permission(self, request, view):
         return bool(request.user and request.user.is_authenticated and request.user.role == "DONOR")

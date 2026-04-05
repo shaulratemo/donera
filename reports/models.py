@@ -5,6 +5,8 @@ from config import settings
 class Report(models.Model):
     cause = models.ForeignKey("causes.Cause", on_delete=models.CASCADE, related_name="reports")
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reports")
+    funds_utilized = models.DecimalField(max_digits=12, decimal_places=2)
+    expense_category = models.CharField(max_length=100, default="Uncategorized")
     content = models.TextField()
     summary = models.TextField(null=True, blank=True)
     evidence = models.FileField(upload_to="reports/")

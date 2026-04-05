@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'organizations',
     'causes',
     'reports',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
