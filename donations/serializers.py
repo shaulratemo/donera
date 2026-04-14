@@ -9,6 +9,7 @@ from users.serializers import MiniUserSerializer
 
 class DonationSerializer(serializers.ModelSerializer):
     user = MiniUserSerializer(read_only=True)
+    cause_name = serializers.CharField(source="cause.title", read_only=True)
     
     class Meta:
         model = Donation
@@ -16,6 +17,7 @@ class DonationSerializer(serializers.ModelSerializer):
             "id",
             "user",
             "cause",
+            "cause_name",
             "amount",
             "phone_number",
             "currency",

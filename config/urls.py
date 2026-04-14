@@ -16,14 +16,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/users/', include('users.urls')),
+    path('api/admin/organizations/', include('organizations.admin_urls')),
+    path('api/admin/causes/', include('causes.admin_urls')),
+    path('api/admin/donations/', include('donations.admin_urls')),
+    path('api/admin/reports/', include('reports.admin_urls')),
     path('api/organizations/', include('organizations.urls')),
     path('api/causes/', include('causes.urls')),
     path('api/donations/', include('donations.urls')),
+    path('payments/', include('donations.payment_urls')),
     path('api/reports/', include('reports.urls')),
     path('api/dashboard/', include('dashboard.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -13,6 +13,7 @@ class Report(models.Model):
     STATUS_CHOICES = (
         ("DRAFT", "Draft"),
         ("PUBLISHED", "Published"),
+        ("DECLINED", "Declined"),
     )
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="DRAFT")
     created_at = models.DateTimeField(auto_now_add=True)

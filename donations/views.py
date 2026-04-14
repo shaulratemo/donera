@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 
 from .models import Donation
 from .serializers import DonationSerializer, InitiateDonationSerializer
+from users.permissions import IsSystemAdmin
 
 
 class InitiateDonationView(APIView):
@@ -86,7 +87,14 @@ class DonationWebhookView(APIView):
 class DonationStatusView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, checkout_request_id):
+    def get(self, request, checkout_request_id=None):
+        checkout_request_id = checkout_request_id or request.query_params.get("checkout_id")
+        if not checkout_request_id:
+            return Response(
+                {"detail": "checkout_id is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         donation = Donation.objects.filter(
             user=request.user,
             external_checkout_id=checkout_request_id,
@@ -134,3 +142,11 @@ class OrganizationDonationListView(generics.ListAPIView):
             ).order_by("-created_at")
         
         return Donation.objects.none()
+
+
+class AdminDonationLedgerListView(generics.ListAPIView):
+    serializer_class = DonationSerializer
+    permission_classes = [IsSystemAdmin]
+
+    def get_queryset(self):
+        return Donation.objects.all().order_by("-created_at")

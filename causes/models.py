@@ -1,15 +1,38 @@
 from django.db import models
+from django.utils.text import slugify
 from decimal import Decimal
 from django.db.models.functions import Coalesce
 from django.db.models import Sum
 
-# Create your models here.
+
+class Category(models.Model):
+    """
+    Category model for causes.
+    Acts as the mapping anchor for the AI recommendation engine.
+    """
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        """Override save to automatically generate slug from name if not provided."""
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+
 class Cause(models.Model):
     organization = models.ForeignKey("organizations.Organization", on_delete=models.CASCADE, related_name="causes")
     title = models.CharField(max_length=100)
     description = models.TextField()
+    cover_image = models.FileField(upload_to="causes/covers/", null=True, blank=True)
     
-    category = models.CharField(max_length=100)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='causes')
     
     STATUS_CHOICES = (
         ('ACTIVE', 'Active'),

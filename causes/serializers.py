@@ -19,6 +19,7 @@ class CauseSerializer(serializers.ModelSerializer):
             "organization",
             "title",
             "description",
+            "cover_image",
             "category",
             "status",
             "target_amount",
